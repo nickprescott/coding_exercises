@@ -13,7 +13,8 @@ def prime_factors(x):
         x /= 2
 
     i = 3
-    #no factors can be larger than the squareroot of the number
+    #don't need to search for factors larger than the square root as they will
+    #have already been found 
     while i <= int(x**0.5):
         while x % i == 0:
             x/=i
