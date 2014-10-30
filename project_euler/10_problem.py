@@ -73,4 +73,4 @@ def sieve_method_2(limit):
     #add 2 to the list of primes left in the sieve
     return [2] + [x for x in xrange(3, limit, 2) if sieve[x]]
 
-print sum(sieve_method_2(200000000))
+print sum(sieve_method_2(2000000))
