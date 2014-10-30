@@ -63,9 +63,14 @@ def sieve_method_2(limit):
         if sieve[potential_prime]:
             multiple = potential_prime
             #remove multiples of the prime from the sieve
-            sieve[multiple*2::multiple] = [False] * ((limit-1)/multiple -1)
+            #you can ignore even multiples since these won't ever be checked,
+            #so increment by multiple*2
+            #start at multiple^2 because multiples less than that will have been
+            #removed by previous numbers (ex: 7^2 = 49: ignore 14, 21 gets removed
+            #by 3 (7*3), 28 gets ignored, 35 gets removed by 5
+            sieve[multiple**2::multiple*2] = [False] * ((limit -1 - multiple**2)/(2*multiple) +1)
         potential_prime += 2
     #add 2 to the list of primes left in the sieve
     return [2] + [x for x in xrange(3, limit, 2) if sieve[x]]
 
-print sum(sieve_method_2(2000000))
+print sum(sieve_method_2(200000000))
