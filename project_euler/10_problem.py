@@ -42,7 +42,7 @@ def sieve_method(limit):
     total = 2
     while potential_prime < limit:
         if sieve[potential_prime]:
-            #total += potential_prime
+            total += potential_prime
             multiple = potential_prime
             while multiple < limit:
                 sieve[multiple] = False
