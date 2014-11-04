@@ -27,13 +27,13 @@ def generate_triangle_num():
 
 def list_divisors(num):
     divisors = set()
-    counter = int(num**0.5) +1
+    potential_divisor = int(num**0.5) +1
     #once you find the divisors that are less than the sqr root, do num/divisor to find the matching pair: ex: 100, sqr_root = 10, divisors are 10, 5, 2, 1. 100/5 = 20, 100/2 = 50, 100/1 = 100. divisors = 100, 50, 20, 10, 5, 2, 1
-    while counter >= 1:
-        if num % counter == 0:
-            divisors.add(counter)
-            divisors.add(num/counter)
-        counter -=1
+    while potential_divisor >= 1:
+        if num % potential_divisor == 0:
+            divisors.add(potential_divisor)
+            divisors.add(num/potential_divisor)
+        potential_divisor -=1
     return divisors
 
 for x in generate_triangle_num():
