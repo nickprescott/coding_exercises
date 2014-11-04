@@ -34,14 +34,13 @@ def list_divisors(num):
             divisors.add(counter)
             divisors.add(num/counter)
         counter -=1
-        divisors.add(num)
-        divisors.add(1)
+    divisors.add(num)
+    divisors.add(1)
     return divisors
 
 for x in generate_triangle_num():
     a = list_divisors(x)
     if len(a) > 500:
         print x
-        print a
         break
 
