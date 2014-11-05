@@ -13,25 +13,54 @@ Which starting number, under one million, produces the longest chain?
 
 NOTE: Once the chain starts the terms are allowed to go above one million.
 """
+import functools
 
-def collatz_sequence(num):
-    count = 0
-    while num > 1:
-        if num%2 ==0:
-            num = num/2
+def collatz_count(num):
+    if num not in collatz_count.store:
+        if num == 1:
+            collatz_count.store[num] = 1
+        elif num%2 == 0:
+            collatz_count.store[num] = collatz_count(num/2) + 1
         else:
-            num = 3*num + 1
-        count +=1
-    count +=1
-    return count
+            collatz_count.store[num] = collatz_count(num*3+1) + 1
 
-longest_chain = 0
-value = 0
-for num in xrange(1000000):
-    chain = collatz_sequence(num)
-    if chain > longest_chain:
-        value = num
-        longest_chain = chain
+    return collatz_count.store[num]
 
-print longest_chain
-print value
+collatz_count.store = {}
+
+#for some reason this will allow a recursion depth limit error??
+class memoize(object):
+
+    def __init__(self, function):
+        self.function = function
+        self.store = {}
+
+    def __call__(self, *args):
+        if args not in self.store:
+            self.store[args] = self.function(*args)
+        return self.store[args]
+
+#this implementation does not allow a recursion depth limit...
+def memoize2(obj):
+    cache = obj.cache = {}
+
+    @functools.wraps(obj)
+    def memoizer(*args, **kwargs):
+        key = str(args) + str(kwargs)
+        if key not in cache:
+            cache[key] = obj(*args, **kwargs)
+        return cache[key]
+    return memoizer
+
+
+@memoize2
+def collatz_count2(num):
+    if num == 1:
+        return 1
+    elif num%2 == 0:
+        return collatz_count2(num/2) + 1
+    else:
+        return collatz_count2(num*3+1) + 1
+
+print max(collatz_count(x) for x in xrange(2, 1000000)) #faster
+#print max(collatz_count2(x) for x in xrange(2, 1000000))
