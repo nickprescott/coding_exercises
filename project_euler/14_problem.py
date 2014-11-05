@@ -28,20 +28,18 @@ def collatz_count(num):
 
 collatz_count.store = {}
 
-#for some reason this will allow a recursion depth limit error??
-class memoize(object):
+class Memoize(object):
 
     def __init__(self, function):
         self.function = function
         self.store = {}
 
     def __call__(self, *args):
-        if args not in self.store:
+        if not args in self.store:
             self.store[args] = self.function(*args)
         return self.store[args]
 
-#this implementation does not allow a recursion depth limit...
-def memoize2(obj):
+def memoize(obj):
     cache = obj.cache = {}
 
     @functools.wraps(obj)
@@ -52,8 +50,7 @@ def memoize2(obj):
         return cache[key]
     return memoizer
 
-
-@memoize2
+@memoize
 def collatz_count2(num):
     if num == 1:
         return 1
@@ -62,5 +59,9 @@ def collatz_count2(num):
     else:
         return collatz_count2(num*3+1) + 1
 
-print max(collatz_count(x) for x in xrange(2, 1000000)) #faster
-#print max(collatz_count2(x) for x in xrange(2, 1000000))
+print max(collatz_count(x) for x in xrange(2, 1000000)) #fastest
+#print max(collatz_count2(x) for x in xrange(2, 1000000)) #second place
+
+#not sure why using the Memoize class as a decorator produces a recursion limit error. @Memoize should be equivalent to collatz_count2 = Memoize(collatz_count2)
+#c = Memoize(collatz_count2)
+#print max(c(x) for x in xrange(2, 1000000)) #last
