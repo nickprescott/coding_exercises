@@ -16,7 +16,7 @@ def create_triangle(data_file):
     triangle = []
     with open(data_file, 'rb') as data:
         for line in data:
-            digit_list = [int(x) for  x in line.split()]
+            digit_list = map(int, line.split())
             triangle.append(digit_list)
     
     return triangle

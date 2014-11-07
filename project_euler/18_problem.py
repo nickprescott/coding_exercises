@@ -33,7 +33,7 @@ def create_triangle(data_file):
     triangle = []
     with open(data_file, 'rb') as data:
         for line in data:
-            digit_list = [int(x) for  x in line.split()]
+            digit_list = map(int, line.split())
             triangle.append(digit_list)
     
     return triangle
@@ -75,3 +75,19 @@ def sum_from_the_bottom(triangle):
     return triangle[height][-1] # 'top' of the triangle is the answer
 
 print sum_from_the_bottom(create_triangle('problem_18_data.txt'))
+
+#another solution with caching of intermediate sums
+#not as efficient as summing from bottom-to-top
+triangle = create_triangle('problem_18_data.txt')
+height = len(triangle) -1
+cache = {}
+
+def top_to_bottom(row, index):
+    if row > height:
+        return 0
+    key = str(index) + ":" + str(row)
+    if key not in cache:
+        cache[key] = triangle[row][index] + max(top_to_bottom(row+1, index), top_to_bottom(row+1, index +1))
+    return cache[key]
+       
+#print top_to_bottom(0,0)
